@@ -1,0 +1,39 @@
+@using System.Globalization
+@model SearchViewModel
+
+<div class="text-center">
+    <h1 class="display-4">Postcode Search</h1>
+    <form method="post">
+        <label>Postcode:</label>
+        <input name="Postcode" placeholder="eg. BH11LR" value="@Model.Postcode" />
+        <input name="Search" value="Search" type="submit" />
+    </form>
+</div>
+
+<hr />
+
+<div class="row">
+    @foreach (var property in Model.Properties)
+    {
+        <div class="col-sm-12">
+            <div class="card bg-light mb-3">
+                <div class="card-header">@property.Postcode</div>
+                <div class="card-body">
+                    <h5 class="card-title">@property.StreetAddress</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        @string.Format(new CultureInfo("en-GB"), "{0:C}", property.PriceInPounds)
+                    </h6>
+                    @if (property.IsFreehold)
+                    {
+                        <p class="card-text">Tenancy: Freehold</p>
+                    }
+                    else
+                    {
+                        <p class="card-text">Tenancy: Leasehold</p>  
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
