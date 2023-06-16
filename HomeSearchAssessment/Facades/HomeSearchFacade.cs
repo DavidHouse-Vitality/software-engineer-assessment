@@ -1,28 +1,25 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using HomeSearchAssessment.Clients;
 using HomeSearchAssessment.Models;
+using Microsoft.Extensions.Logging;
 
 namespace HomeSearchAssessment.Facades
 {
     public class HomeSearchFacade
     {
-        private List<Property> _propertiesFromDatabase;
-        
-        public HomeSearchFacade(List<Property> propertiesFromDatabase)
+        private readonly ILogger _logger;
+        private readonly IHomeSearchClient _client;
+
+        public HomeSearchFacade(IHomeSearchClient client)
         {
-            _propertiesFromDatabase = propertiesFromDatabase;
-        }
-        
-        public List<Property> GetPropertiesByPostcode(string postcode)
-        {
-            // Your code goes here
-            return null;
+            _logger = new Logger<HomeSearchFacade>(new LoggerFactory());
+            _client = client;
         }
 
-        private static bool matchesWildcard(string search, string target)
+        public List<Policy> GetPoliciesByPostcode(string postcode)
         {
-            // You can use this helper for the wildcard matching logic if you want
-            return false;
+            // Todo: Add code here
+            return null;
         }
     }
 }

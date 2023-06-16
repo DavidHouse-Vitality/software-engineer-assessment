@@ -7,11 +7,11 @@ namespace HomeSearchAssessment.Models
         public SearchViewModel()
         {
             Postcode = string.Empty;
-            Properties = new List<Property>();
+            Policies = new List<Policy>();
         }
         
         public string Postcode { get; set; }
         
-        public List<Property> Properties { get; set; }
+        public List<Policy> Policies { get; set; }
     }
 }

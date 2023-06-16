@@ -1,8 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeSearchAssessment", "HomeSearchAssessment\HomeSearchAssessment.csproj", "{1FE1CC81-431B-4F80-8527-C7EE936D3030}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33801.468
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HomeSearchAssessment", "HomeSearchAssessment\HomeSearchAssessment.csproj", "{1FE1CC81-431B-4F80-8527-C7EE936D3030}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeSearchAssessmentTest", "HomeSearchAssessmentTest\HomeSearchAssessmentTest.csproj", "{37DB89D5-1BE3-46C6-A71F-102C744EA38C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HomeSearchAssessmentTest", "HomeSearchAssessmentTest\HomeSearchAssessmentTest.csproj", "{37DB89D5-1BE3-46C6-A71F-102C744EA38C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClaimsMicroservice", "ClaimsMicroservice\ClaimsMicroservice.csproj", "{0BF028C2-F6CF-4454-84F5-E88C384C1613}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoliciesMicroservice", "PoliciesMicroservice\PoliciesMicroservice.csproj", "{40337B65-4175-40B4-9DEC-8D38AE0FE129}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microservices", "Microservices", "{6D35890E-282F-4094-9A95-55E469D8FB61}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +27,23 @@ Global
 		{37DB89D5-1BE3-46C6-A71F-102C744EA38C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37DB89D5-1BE3-46C6-A71F-102C744EA38C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37DB89D5-1BE3-46C6-A71F-102C744EA38C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BF028C2-F6CF-4454-84F5-E88C384C1613}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BF028C2-F6CF-4454-84F5-E88C384C1613}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BF028C2-F6CF-4454-84F5-E88C384C1613}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BF028C2-F6CF-4454-84F5-E88C384C1613}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40337B65-4175-40B4-9DEC-8D38AE0FE129}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40337B65-4175-40B4-9DEC-8D38AE0FE129}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40337B65-4175-40B4-9DEC-8D38AE0FE129}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40337B65-4175-40B4-9DEC-8D38AE0FE129}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0BF028C2-F6CF-4454-84F5-E88C384C1613} = {6D35890E-282F-4094-9A95-55E469D8FB61}
+		{40337B65-4175-40B4-9DEC-8D38AE0FE129} = {6D35890E-282F-4094-9A95-55E469D8FB61}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D983CFF7-2556-4869-B68B-2BFCAE5D14D6}
 	EndGlobalSection
 EndGlobal

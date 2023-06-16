@@ -1,5 +1,3 @@
-using System;
-
 namespace HomeSearchAssessment.Models
 {
     public class ErrorViewModel

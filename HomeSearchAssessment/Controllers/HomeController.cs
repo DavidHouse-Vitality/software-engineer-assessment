@@ -1,7 +1,9 @@
 ﻿using System.Diagnostics;
+using System.Net.Http;
+using HomeSearchAssessment.Clients;
 using HomeSearchAssessment.Facades;
 using HomeSearchAssessment.Models;
-using HomeSearchAssessment.Readers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -9,15 +11,23 @@ namespace HomeSearchAssessment.Controllers
 {
     public class HomeController : Controller
     {
+        private static readonly HttpClient HttpClient = new();
         private readonly ILogger<HomeController> _logger;
-        private readonly PropertyDatabaseReader _reader;
         private readonly HomeSearchFacade _facade;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IHttpContextAccessor httpContextAccessor)
         {
             _logger = logger;
-            _reader = new PropertyDatabaseReader();
-            _facade = new HomeSearchFacade(_reader.Read());
+
+            var scheme = httpContextAccessor.HttpContext.Request.Scheme;
+            var host = httpContextAccessor.HttpContext.Request.Host.Value;
+
+            var policiesMicroserviceUrl = $"{scheme}://{host}/api/policies";
+            var claimsMicroserviceUrl = $"{scheme}://{host}/api/claims";
+
+            var client = new HomeSearchClient(HttpClient, policiesMicroserviceUrl, claimsMicroserviceUrl);
+
+            _facade = new HomeSearchFacade(client);
         }
 
         [HttpGet]
@@ -30,10 +40,9 @@ namespace HomeSearchAssessment.Controllers
         public IActionResult Search(SearchViewModel searchViewModel)
         {
             var postcode = searchViewModel.Postcode;
-            const string message = "Searching by postcode {0}";
-            _logger.LogInformation(string.Format(message, postcode));
+            _logger.LogInformation("Searching by postcode {Postcode}", postcode);
             
-            searchViewModel.Properties = _facade.GetPropertiesByPostcode(postcode ?? string.Empty);
+            searchViewModel.Policies = _facade.GetPoliciesByPostcode(postcode ?? string.Empty);
             
             return View(searchViewModel);
         }

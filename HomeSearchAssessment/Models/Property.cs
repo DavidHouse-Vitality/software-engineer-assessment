@@ -6,8 +6,6 @@
         
         public int PriceInPounds { get; set; }
         
-        public bool IsFreehold { get; set; }
-        
         public string Postcode { get; set; }
     }
 }
