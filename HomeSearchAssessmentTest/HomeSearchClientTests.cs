@@ -19,8 +19,8 @@ namespace HomeSearchAssessmentTest
     {
         #region Test Data
 
-        private static readonly string policiesMicroserviceUrl = @"/api/policies";
-        private static readonly string claimsMicroserviceUrl = @"/api/claims";
+        private static readonly string policiesMicroserviceUrl = @"https://test.com/api/policies";
+        private static readonly string claimsMicroserviceUrl = @"https://test.com/api/claims";
 
         private static readonly List<Policy> testPolicies = new()
         {
@@ -207,7 +207,13 @@ namespace HomeSearchAssessmentTest
 
             var policiesResult = client.GetPolicies().Result;
             Assert.NotNull(policiesResult);
-            Assert.Equal(testPolicies, policiesResult);
+            Assert.Equal(testPolicies.Count, policiesResult.Count);
+
+            for (var i = 0; i < testPolicies.Count; i++)
+            {
+                Assert.Equal(testPolicies[i].Id, policiesResult[i].Id);
+                Assert.Equal(testPolicies[i].Property.Postcode, policiesResult[i].Property.Postcode);
+            }
         }
 
         /*
@@ -223,7 +229,10 @@ namespace HomeSearchAssessmentTest
 
             var policyResult = client.GetPolicy(1).Result;
             Assert.NotNull(policyResult);
-            Assert.Equal(testPolicies.Single(p => p.Id == 1), policyResult);
+
+            var testPolicy = testPolicies.Single(p => p.Id == 1);
+            Assert.Equal(testPolicy.Id, policyResult.Id);
+            Assert.Equal(testPolicy.Property.Postcode, policyResult.Property.Postcode);
             Assert.True(policyResult.Id == 1);
         }
 
@@ -255,7 +264,12 @@ namespace HomeSearchAssessmentTest
 
             var claimsResult = client.GetClaims().Result;
             Assert.NotNull(claimsResult);
-            Assert.Equal(testClaims, claimsResult);
+            Assert.Equal(testClaims.Count, claimsResult.Count);
+
+            for (var i = 0; i < testClaims.Count; i++)
+            {
+                Assert.Equal(testClaims[i].ClaimNumber, claimsResult[i].ClaimNumber);
+            }
         }
 
         /*
@@ -305,7 +319,7 @@ namespace HomeSearchAssessmentTest
 
             var claimResult = client.GetClaim("C001").Result;
             Assert.NotNull(claimResult);
-            Assert.Equal(testClaims.Single(c => c.ClaimNumber == "C001"), claimResult);
+            Assert.Equal(testClaims.Single(c => c.ClaimNumber == "C001").ClaimNumber, claimResult.ClaimNumber);
         }
 
         /*

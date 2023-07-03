@@ -1,6 +1,7 @@
 ﻿using HomeSearchAssessment.Models;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace HomeSearchAssessment.Clients
@@ -10,12 +11,14 @@ namespace HomeSearchAssessment.Clients
         private readonly HttpClient _httpClient;
         private readonly string _policiesMicroserviceUrl;
         private readonly string _claimsMicroserviceUrl;
+        private readonly JsonSerializerOptions _serialiserOptions;
 
         public HomeSearchClient(HttpClient httpClient, string policiesMicroserviceUrl, string claimsMicroserviceUrl)
         {
             _httpClient = httpClient;
             _policiesMicroserviceUrl = policiesMicroserviceUrl;
             _claimsMicroserviceUrl = claimsMicroserviceUrl;
+            _serialiserOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web);
         }
 
         public async Task<List<Policy>> GetPolicies()
