@@ -388,7 +388,7 @@ namespace HomeSearchAssessmentTest
 
             mockHttpMessageHandler
                 .Protected()
-                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.Is<HttpRequestMessage>(m => Regex.IsMatch(m.RequestUri.ToString(), $"^{claimsMicroserviceUrl}?policyId=\\d+$")), ItExpr.IsAny<CancellationToken>())
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.Is<HttpRequestMessage>(m => Regex.IsMatch(m.RequestUri.ToString(), $"^{claimsMicroserviceUrl}\\?policyId=\\d+$")), ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync((HttpRequestMessage request, CancellationToken cancellationToken) =>
                 {
                     var policyId = int.Parse(request.RequestUri.ToString().Split('=').Last());
@@ -401,7 +401,7 @@ namespace HomeSearchAssessmentTest
 
             mockHttpMessageHandler
                 .Protected()
-                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.Is<HttpRequestMessage>(m => Regex.IsMatch(m.RequestUri.ToString(), $"^{claimsMicroserviceUrl}?policyId=[1-9]$")), ItExpr.IsAny<CancellationToken>())
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.Is<HttpRequestMessage>(m => Regex.IsMatch(m.RequestUri.ToString(), $"^{claimsMicroserviceUrl}\\?policyId=[1-9]$")), ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync((HttpRequestMessage request, CancellationToken cancellationToken) =>
                 {
                     var policyId = int.Parse(request.RequestUri.ToString().Split('=').Last());
