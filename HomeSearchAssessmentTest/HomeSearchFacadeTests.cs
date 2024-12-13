@@ -14,7 +14,7 @@ namespace HomeSearchAssessmentTest
     {
         #region Test Data
 
-        private static readonly List<Policy> testPolicies = new()
+        private static readonly List<Policy> TestPolicies = new()
         {
             new Policy
             {
@@ -108,7 +108,7 @@ namespace HomeSearchAssessmentTest
             }
         };
 
-        private static readonly List<Claim> testClaims = new()
+        private static readonly List<Claim> TestClaims = new()
         {
             new Claim
             {
@@ -192,12 +192,12 @@ namespace HomeSearchAssessmentTest
          * THEN no properties are returned to me
          */
         [Fact]
-        public static void HomeSearchFacade_EmptySting_NoPropertiesReturned()
+        public static async Task HomeSearchFacade_EmptySting_NoPropertiesReturned()
         {
             var clientMock = GetMockClient();
             var facade = new HomeSearchFacade(clientMock.Object);
 
-            var policies = facade.GetPoliciesByPostcode("");
+            var policies = await facade.GetPoliciesByPostcode("");
             Assert.NotNull(policies);
             Assert.Empty(policies);
         }
@@ -208,12 +208,12 @@ namespace HomeSearchAssessmentTest
          * THEN the matching properties are returned to me
          */
         [Fact]
-        public static void HomeSearchFacade_ValidPostcode_MatchingPropertiesReturned()
+        public static async Task HomeSearchFacade_ValidPostcode_MatchingPropertiesReturned()
         {
             var clientMock = GetMockClient();
             var facade = new HomeSearchFacade(clientMock.Object);
 
-            var policies = facade.GetPoliciesByPostcode("BH141PA");
+            var policies = await facade.GetPoliciesByPostcode("BH141PA");
             Assert.NotNull(policies);
             Assert.Equal(2, policies.Count);
             Assert.True(policies.Exists(p => p.Id == 6));
@@ -226,12 +226,12 @@ namespace HomeSearchAssessmentTest
          * THEN the properties that don't match are not returned to me
          */
         [Fact]
-        public static void HomeSearchFacade_ValidPostcode_MismatchingPropertiesNotReturned()
+        public static async Task HomeSearchFacade_ValidPostcode_MismatchingPropertiesNotReturned()
         {
             var clientMock = GetMockClient();
             var facade = new HomeSearchFacade(clientMock.Object);
 
-            var policies = facade.GetPoliciesByPostcode("NG549BQ");
+            var policies = await facade.GetPoliciesByPostcode("NG549BQ");
             Assert.NotNull(policies);
             Assert.NotEmpty(policies);
             Assert.False(policies.Exists(p => p.Id == 6));
@@ -243,12 +243,12 @@ namespace HomeSearchAssessmentTest
          * THEN the properties are returned in order with the most expensive first
          */
         [Fact]
-        public static void HomeSearchFacade_ValidPostcode_PropertiesReturnedByHighestToLowestPrice()
+        public static async Task HomeSearchFacade_ValidPostcode_PropertiesReturnedByHighestToLowestPrice()
         {
             var clientMock = GetMockClient();
             var facade = new HomeSearchFacade(clientMock.Object);
 
-            var policies = facade.GetPoliciesByPostcode("BH141PA");
+            var policies = await facade.GetPoliciesByPostcode("BH141PA");
             Assert.NotNull(policies);
             Assert.NotEmpty(policies);
             Assert.Equal(2, policies.Count);
@@ -262,12 +262,12 @@ namespace HomeSearchAssessmentTest
          * THEN the matching properties are returned to me
          */
         [Fact]
-        public static void HomeSearchFacade_ValidWildcardPostcode_MatchingPropertiesReturned()
+        public static async Task HomeSearchFacade_ValidWildcardPostcode_MatchingPropertiesReturned()
         {
             var clientMock = GetMockClient();
             var facade = new HomeSearchFacade(clientMock.Object);
 
-            var policies = facade.GetPoliciesByPostcode("BH9****");
+            var policies = await facade.GetPoliciesByPostcode("BH9****");
             Assert.NotNull(policies);
             Assert.Equal(2, policies.Count);
             Assert.True(policies.Exists(p => p.Property.Postcode == "BH943KV"));
@@ -280,12 +280,12 @@ namespace HomeSearchAssessmentTest
          * THEN the mismatching properties are not returned to me
          */
         [Fact]
-        public static void HomeSearchFacade_ValidWildcardPostcode_MismatchingPropertiesNotReturned()
+        public static async Task HomeSearchFacade_ValidWildcardPostcode_MismatchingPropertiesNotReturned()
         {
             var clientMock = GetMockClient();
             var facade = new HomeSearchFacade(clientMock.Object);
 
-            var policies = facade.GetPoliciesByPostcode("BH9****");
+            var policies = await facade.GetPoliciesByPostcode("BH9****");
             Assert.NotNull(policies);
             Assert.NotEmpty(policies);
             Assert.False(policies.Exists(p => p.Property.Postcode == "BH141PA"));
@@ -298,12 +298,12 @@ namespace HomeSearchAssessmentTest
          * THEN no claim information is returned to me
          */
         [Fact]
-        public static void HomeSearchFacade_ValidPostcodeWithoutClaims_NoClaimsReturned()
+        public static async Task HomeSearchFacade_ValidPostcodeWithoutClaims_NoClaimsReturned()
         {
             var clientMock = GetMockClient();
             var facade = new HomeSearchFacade(clientMock.Object);
 
-            var policies = facade.GetPoliciesByPostcode("TW987OF");
+            var policies = await facade.GetPoliciesByPostcode("TW987OF");
             Assert.NotNull(policies);
             Assert.NotEmpty(policies);
             Assert.False(policies.Exists(p => p.Claims.Any()));
@@ -316,12 +316,12 @@ namespace HomeSearchAssessmentTest
          * THEN the relevant claim information is returned to me
          */
         [Fact]
-        public static void HomeSearchFacade_ValidPostcodeWithClaim_RelevantClaimReturned()
+        public static async Task HomeSearchFacade_ValidPostcodeWithClaim_RelevantClaimReturned()
         {
             var clientMock = GetMockClient();
             var facade = new HomeSearchFacade(clientMock.Object);
 
-            var policies = facade.GetPoliciesByPostcode("BH943KV");
+            var policies = await facade.GetPoliciesByPostcode("BH943KV");
             Assert.NotNull(policies);
             Assert.NotEmpty(policies);
             Assert.Single(policies.First().Claims);
@@ -335,12 +335,12 @@ namespace HomeSearchAssessmentTest
          * THEN the relevant claim information is returned to me
          */
         [Fact]
-        public static void HomeSearchFacade_ValidPostcodeWithMultipleClaims_RelevantClaimsReturned()
+        public static async Task HomeSearchFacade_ValidPostcodeWithMultipleClaims_RelevantClaimsReturned()
         {
             var clientMock = GetMockClient();
             var facade = new HomeSearchFacade(clientMock.Object);
 
-            var policies = facade.GetPoliciesByPostcode("TW270RE");
+            var policies = await facade.GetPoliciesByPostcode("TW270RE");
             Assert.NotNull(policies);
             Assert.NotEmpty(policies);
             Assert.Equal(2, policies.First().Claims.Count);
@@ -351,11 +351,11 @@ namespace HomeSearchAssessmentTest
         private static Mock<IHomeSearchClient> GetMockClient()
         {
             var clientMock = new Mock<IHomeSearchClient>();
-            clientMock.Setup(c => c.GetPolicies()).Returns(new Task<List<Policy>>(() => testPolicies));
-            clientMock.Setup(c => c.GetPolicy(It.IsAny<int>())).Returns<int>(id => new Task<Policy>(() => testPolicies.Find(p => p.Id == id)));
-            clientMock.Setup(c => c.GetClaims()).Returns(new Task<List<Claim>>(() => testClaims));
-            clientMock.Setup(c => c.GetClaimsByPolicyId(It.IsAny<int>())).Returns<int>(policyId => new Task<List<Claim>>(() => testClaims.FindAll(c => c.PolicyId == policyId)));
-            clientMock.Setup(c => c.GetClaim(It.IsAny<string>())).Returns<string>(claimNumber => new Task<Claim>(() => testClaims.Find(c => c.ClaimNumber == claimNumber)));
+            clientMock.Setup(c => c.GetPolicies()).Returns(new Task<List<Policy>>(() => TestPolicies));
+            clientMock.Setup(c => c.GetPolicy(It.IsAny<int>())).Returns<int>(id => new Task<Policy>(() => TestPolicies.Find(p => p.Id == id)));
+            clientMock.Setup(c => c.GetClaims()).Returns(new Task<List<Claim>>(() => TestClaims));
+            clientMock.Setup(c => c.GetClaimsByPolicyId(It.IsAny<int>())).Returns<int>(policyId => new Task<List<Claim>>(() => TestClaims.FindAll(c => c.PolicyId == policyId)));
+            clientMock.Setup(c => c.GetClaim(It.IsAny<string>())).Returns<string>(claimNumber => new Task<Claim>(() => TestClaims.Find(c => c.ClaimNumber == claimNumber)));
             return clientMock;
         }
     }

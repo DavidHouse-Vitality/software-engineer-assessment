@@ -19,10 +19,10 @@ namespace HomeSearchAssessmentTest
     {
         #region Test Data
 
-        private static readonly string policiesMicroserviceUrl = @"https://test.com/api/policies";
-        private static readonly string claimsMicroserviceUrl = @"https://test.com/api/claims";
+        private const string PoliciesMicroserviceUrl = "https://test.com/api/policies";
+        private const string ClaimsMicroserviceUrl = "https://test.com/api/claims";
 
-        private static readonly List<Policy> testPolicies = new()
+        private static readonly List<Policy> TestPolicies = new()
         {
             new Policy
             {
@@ -116,7 +116,7 @@ namespace HomeSearchAssessmentTest
             }
         };
 
-        private static readonly List<Claim> testClaims = new()
+        private static readonly List<Claim> TestClaims = new()
         {
             new Claim
             {
@@ -200,19 +200,19 @@ namespace HomeSearchAssessmentTest
          * THEN all the policies are returned
          */
         [Fact]
-        public static void HomeSearchClient_GetPolicies_AllPoliciesReturned()
+        public static async Task HomeSearchClient_GetPolicies_AllPoliciesReturned()
         {
             var httpClientMock = GetMockHttpClient();
-            var client = new HomeSearchClient(httpClientMock, policiesMicroserviceUrl, claimsMicroserviceUrl);
+            var client = new HomeSearchClient(httpClientMock, PoliciesMicroserviceUrl, ClaimsMicroserviceUrl);
 
-            var policiesResult = client.GetPolicies().Result;
+            var policiesResult = await client.GetPolicies();
             Assert.NotNull(policiesResult);
-            Assert.Equal(testPolicies.Count, policiesResult.Count);
+            Assert.Equal(TestPolicies.Count, policiesResult.Count);
 
-            for (var i = 0; i < testPolicies.Count; i++)
+            for (var i = 0; i < TestPolicies.Count; i++)
             {
-                Assert.Equal(testPolicies[i].Id, policiesResult[i].Id);
-                Assert.Equal(testPolicies[i].Property.Postcode, policiesResult[i].Property.Postcode);
+                Assert.Equal(TestPolicies[i].Id, policiesResult[i].Id);
+                Assert.Equal(TestPolicies[i].Property.Postcode, policiesResult[i].Property.Postcode);
             }
         }
 
@@ -222,15 +222,15 @@ namespace HomeSearchAssessmentTest
          * THEN the matching policy is returned
          */
         [Fact]
-        public static void HomeSearchClient_ValidGetPolicy_MatchingPolicyReturned()
+        public static async Task HomeSearchClient_ValidGetPolicy_MatchingPolicyReturned()
         {
             var httpClientMock = GetMockHttpClient();
-            var client = new HomeSearchClient(httpClientMock, policiesMicroserviceUrl, claimsMicroserviceUrl);
+            var client = new HomeSearchClient(httpClientMock, PoliciesMicroserviceUrl, ClaimsMicroserviceUrl);
 
-            var policyResult = client.GetPolicy(1).Result;
+            var policyResult = await client.GetPolicy(1);
             Assert.NotNull(policyResult);
 
-            var testPolicy = testPolicies.Single(p => p.Id == 1);
+            var testPolicy = TestPolicies.Single(p => p.Id == 1);
             Assert.Equal(testPolicy.Id, policyResult.Id);
             Assert.Equal(testPolicy.Property.Postcode, policyResult.Property.Postcode);
             Assert.True(policyResult.Id == 1);
@@ -242,12 +242,12 @@ namespace HomeSearchAssessmentTest
          * THEN no policy is returned
          */
         [Fact]
-        public static void HomeSearchClient_InvalidGetPolicy_NoPolicyReturned()
+        public static async Task HomeSearchClient_InvalidGetPolicy_NoPolicyReturned()
         {
             var httpClientMock = GetMockHttpClient();
-            var client = new HomeSearchClient(httpClientMock, policiesMicroserviceUrl, claimsMicroserviceUrl);
+            var client = new HomeSearchClient(httpClientMock, PoliciesMicroserviceUrl, ClaimsMicroserviceUrl);
 
-            var policyResult = client.GetPolicy(10).Result;
+            var policyResult = await client.GetPolicy(10);
             Assert.Null(policyResult);
         }
 
@@ -257,18 +257,18 @@ namespace HomeSearchAssessmentTest
          * THEN all the claims are returned
          */
         [Fact]
-        public static void HomeSearchClient_GetClaims_AllClaimsReturned()
+        public static async Task HomeSearchClient_GetClaims_AllClaimsReturned()
         {
             var httpClientMock = GetMockHttpClient();
-            var client = new HomeSearchClient(httpClientMock, policiesMicroserviceUrl, claimsMicroserviceUrl);
+            var client = new HomeSearchClient(httpClientMock, PoliciesMicroserviceUrl, ClaimsMicroserviceUrl);
 
-            var claimsResult = client.GetClaims().Result;
+            var claimsResult = await client.GetClaims();
             Assert.NotNull(claimsResult);
-            Assert.Equal(testClaims.Count, claimsResult.Count);
+            Assert.Equal(TestClaims.Count, claimsResult.Count);
 
-            for (var i = 0; i < testClaims.Count; i++)
+            for (var i = 0; i < TestClaims.Count; i++)
             {
-                Assert.Equal(testClaims[i].ClaimNumber, claimsResult[i].ClaimNumber);
+                Assert.Equal(TestClaims[i].ClaimNumber, claimsResult[i].ClaimNumber);
             }
         }
 
@@ -278,12 +278,12 @@ namespace HomeSearchAssessmentTest
          * THEN the matching claims are returned
          */
         [Fact]
-        public static void HomeSearchClient_ValidGetClaimsByPolicyId_MatchingClaimsReturned()
+        public static async Task HomeSearchClient_ValidGetClaimsByPolicyId_MatchingClaimsReturned()
         {
             var httpClientMock = GetMockHttpClient();
-            var client = new HomeSearchClient(httpClientMock, policiesMicroserviceUrl, claimsMicroserviceUrl);
+            var client = new HomeSearchClient(httpClientMock, PoliciesMicroserviceUrl, ClaimsMicroserviceUrl);
 
-            var claimsResult = client.GetClaimsByPolicyId(7).Result;
+            var claimsResult = await client.GetClaimsByPolicyId(7);
             Assert.NotNull(claimsResult);
             Assert.Equal(2, claimsResult.Count);
             Assert.True(claimsResult.Exists(c => c.ClaimNumber == "C006"));
@@ -296,12 +296,12 @@ namespace HomeSearchAssessmentTest
          * THEN no claims are returned
          */
         [Fact]
-        public static void HomeSearchClient_InvalidGetClaimsByPolicyId_NoClaimsReturned()
+        public static async Task HomeSearchClient_InvalidGetClaimsByPolicyId_NoClaimsReturned()
         {
             var httpClientMock = GetMockHttpClient();
-            var client = new HomeSearchClient(httpClientMock, policiesMicroserviceUrl, claimsMicroserviceUrl);
+            var client = new HomeSearchClient(httpClientMock, PoliciesMicroserviceUrl, ClaimsMicroserviceUrl);
 
-            var claimsResult = client.GetClaimsByPolicyId(10).Result;
+            var claimsResult = await client.GetClaimsByPolicyId(10);
             Assert.NotNull(claimsResult);
             Assert.Empty(claimsResult);
         }
@@ -312,14 +312,14 @@ namespace HomeSearchAssessmentTest
          * THEN the matching claim is returned
          */
         [Fact]
-        public static void HomeSearchClient_ValidGetClaim_MatchingClaimReturned()
+        public static async Task HomeSearchClient_ValidGetClaim_MatchingClaimReturned()
         {
             var httpClientMock = GetMockHttpClient();
-            var client = new HomeSearchClient(httpClientMock, policiesMicroserviceUrl, claimsMicroserviceUrl);
+            var client = new HomeSearchClient(httpClientMock, PoliciesMicroserviceUrl, ClaimsMicroserviceUrl);
 
-            var claimResult = client.GetClaim("C001").Result;
+            var claimResult = await client.GetClaim("C001");
             Assert.NotNull(claimResult);
-            Assert.Equal(testClaims.Single(c => c.ClaimNumber == "C001").ClaimNumber, claimResult.ClaimNumber);
+            Assert.Equal(TestClaims.Single(c => c.ClaimNumber == "C001").ClaimNumber, claimResult.ClaimNumber);
         }
 
         /*
@@ -328,12 +328,12 @@ namespace HomeSearchAssessmentTest
          * THEN no claim is returned
          */
         [Fact]
-        public static void HomeSearchClient_InvalidGetClaim_NoClaimReturned()
+        public static async Task HomeSearchClient_InvalidGetClaim_NoClaimReturned()
         {
             var httpClientMock = GetMockHttpClient();
-            var client = new HomeSearchClient(httpClientMock, policiesMicroserviceUrl, claimsMicroserviceUrl);
+            var client = new HomeSearchClient(httpClientMock, PoliciesMicroserviceUrl, ClaimsMicroserviceUrl);
 
-            var claimResult = client.GetClaim("C010").Result;
+            var claimResult = await client.GetClaim("C010");
             Assert.Null(claimResult);
         }
 
@@ -343,29 +343,24 @@ namespace HomeSearchAssessmentTest
 
             mockHttpMessageHandler
                 .Protected()
-                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.Is<HttpRequestMessage>(m => m.RequestUri.ToString() == policiesMicroserviceUrl), ItExpr.IsAny<CancellationToken>())
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.Is<HttpRequestMessage>(m => m.RequestUri.ToString() == PoliciesMicroserviceUrl), ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(new HttpResponseMessage
                 {
                     StatusCode = HttpStatusCode.OK,
-                    Content = JsonContent.Create(testPolicies)
+                    Content = JsonContent.Create(TestPolicies)
                 });
 
             mockHttpMessageHandler
                 .Protected()
-                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.Is<HttpRequestMessage>(m => Regex.IsMatch(m.RequestUri.ToString(), $"^{policiesMicroserviceUrl}/\\d+$")), ItExpr.IsAny<CancellationToken>())
-                .ReturnsAsync((HttpRequestMessage request, CancellationToken cancellationToken) =>
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.Is<HttpRequestMessage>(m => Regex.IsMatch(m.RequestUri.ToString(), $"^{PoliciesMicroserviceUrl}/\\d+$")), ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync((HttpRequestMessage _, CancellationToken _) => new HttpResponseMessage
                 {
-                    var policyId = int.Parse(request.RequestUri.ToString().Split('/').Last());
-
-                    return new HttpResponseMessage
-                    {
-                        StatusCode = HttpStatusCode.NotFound
-                    };
+                    StatusCode = HttpStatusCode.NotFound
                 });
 
             mockHttpMessageHandler
                 .Protected()
-                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.Is<HttpRequestMessage>(m => Regex.IsMatch(m.RequestUri.ToString(), $"^{policiesMicroserviceUrl}/[1-9]$")), ItExpr.IsAny<CancellationToken>())
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.Is<HttpRequestMessage>(m => Regex.IsMatch(m.RequestUri.ToString(), $"^{PoliciesMicroserviceUrl}/[1-9]$")), ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync((HttpRequestMessage request, CancellationToken cancellationToken) =>
                 {
                     var policyId = int.Parse(request.RequestUri.ToString().Split('/').Last());
@@ -373,22 +368,22 @@ namespace HomeSearchAssessmentTest
                     return new HttpResponseMessage
                     {
                         StatusCode = HttpStatusCode.OK,
-                        Content = JsonContent.Create(testPolicies.Single(p => p.Id == policyId))
+                        Content = JsonContent.Create(TestPolicies.Single(p => p.Id == policyId))
                     };
                 });
 
             mockHttpMessageHandler
                 .Protected()
-                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.Is<HttpRequestMessage>(m => m.RequestUri.ToString() == claimsMicroserviceUrl), ItExpr.IsAny<CancellationToken>())
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.Is<HttpRequestMessage>(m => m.RequestUri.ToString() == ClaimsMicroserviceUrl), ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(new HttpResponseMessage
                 {
                     StatusCode = HttpStatusCode.OK,
-                    Content = JsonContent.Create(testClaims)
+                    Content = JsonContent.Create(TestClaims)
                 });
 
             mockHttpMessageHandler
                 .Protected()
-                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.Is<HttpRequestMessage>(m => Regex.IsMatch(m.RequestUri.ToString(), $"^{claimsMicroserviceUrl}\\?policyId=\\d+$")), ItExpr.IsAny<CancellationToken>())
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.Is<HttpRequestMessage>(m => Regex.IsMatch(m.RequestUri.ToString(), $"^{ClaimsMicroserviceUrl}\\?policyId=\\d+$")), ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync((HttpRequestMessage request, CancellationToken cancellationToken) =>
                 {
                     var policyId = int.Parse(request.RequestUri.ToString().Split('=').Last());
@@ -401,7 +396,7 @@ namespace HomeSearchAssessmentTest
 
             mockHttpMessageHandler
                 .Protected()
-                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.Is<HttpRequestMessage>(m => Regex.IsMatch(m.RequestUri.ToString(), $"^{claimsMicroserviceUrl}\\?policyId=[1-9]$")), ItExpr.IsAny<CancellationToken>())
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.Is<HttpRequestMessage>(m => Regex.IsMatch(m.RequestUri.ToString(), $"^{ClaimsMicroserviceUrl}\\?policyId=[1-9]$")), ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync((HttpRequestMessage request, CancellationToken cancellationToken) =>
                 {
                     var policyId = int.Parse(request.RequestUri.ToString().Split('=').Last());
@@ -409,13 +404,13 @@ namespace HomeSearchAssessmentTest
                     return new HttpResponseMessage
                     {
                         StatusCode = HttpStatusCode.OK,
-                        Content = JsonContent.Create(testClaims.Where(c => c.PolicyId == policyId))
+                        Content = JsonContent.Create(TestClaims.Where(c => c.PolicyId == policyId))
                     };
                 });
 
             mockHttpMessageHandler
                 .Protected()
-                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.Is<HttpRequestMessage>(m => Regex.IsMatch(m.RequestUri.ToString(), $"^{claimsMicroserviceUrl}/[a-zA-Z0-9]+$")), ItExpr.IsAny<CancellationToken>())
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.Is<HttpRequestMessage>(m => Regex.IsMatch(m.RequestUri.ToString(), $"^{ClaimsMicroserviceUrl}/[a-zA-Z0-9]+$")), ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync((HttpRequestMessage request, CancellationToken cancellationToken) =>
                 {
                     var claimNumber = request.RequestUri.ToString().Split('/').Last();
@@ -428,7 +423,7 @@ namespace HomeSearchAssessmentTest
 
             mockHttpMessageHandler
                 .Protected()
-                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.Is<HttpRequestMessage>(m => Regex.IsMatch(m.RequestUri.ToString(), $"^{claimsMicroserviceUrl}/C00[1-9]$")), ItExpr.IsAny<CancellationToken>())
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.Is<HttpRequestMessage>(m => Regex.IsMatch(m.RequestUri.ToString(), $"^{ClaimsMicroserviceUrl}/C00[1-9]$")), ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync((HttpRequestMessage request, CancellationToken cancellationToken) =>
                 {
                     var claimNumber = request.RequestUri.ToString().Split('/').Last();
@@ -436,7 +431,7 @@ namespace HomeSearchAssessmentTest
                     return new HttpResponseMessage
                     {
                         StatusCode = HttpStatusCode.OK,
-                        Content = JsonContent.Create(testClaims.Single(c => c.ClaimNumber == claimNumber))
+                        Content = JsonContent.Create(TestClaims.Single(c => c.ClaimNumber == claimNumber))
                     };
                 });
 

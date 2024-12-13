@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Net.Http;
+using System.Threading.Tasks;
 using HomeSearchAssessment.Clients;
 using HomeSearchAssessment.Facades;
 using HomeSearchAssessment.Models;
@@ -37,12 +38,12 @@ namespace HomeSearchAssessment.Controllers
         }
         
         [HttpPost]
-        public IActionResult Search(SearchViewModel searchViewModel)
+        public async Task<IActionResult> Search(SearchViewModel searchViewModel)
         {
             var postcode = searchViewModel.Postcode;
             _logger.LogInformation("Searching by postcode {Postcode}", postcode);
             
-            searchViewModel.Policies = _facade.GetPoliciesByPostcode(postcode ?? string.Empty);
+            searchViewModel.Policies = await _facade.GetPoliciesByPostcode(postcode ?? string.Empty);
             
             return View(searchViewModel);
         }
