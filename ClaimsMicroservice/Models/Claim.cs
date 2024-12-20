@@ -1,15 +1,14 @@
-﻿namespace ClaimsMicroservice.Models
+﻿namespace ClaimsMicroservice.Models;
+
+internal class Claim
 {
-    internal class Claim
-    {
-        public string? ClaimNumber { get; set; }
+    public string? ClaimNumber { get; set; }
 
-        public int PolicyId { get; set; }
+    public int PolicyId { get; set; }
 
-        public string? Status { get; set; }
+    public string? Status { get; set; }
 
-        public decimal AmountInPounds { get; set; }
+    public decimal AmountInPounds { get; set; }
 
-        public DateTime CreationDate { get; set; }
-    }
+    public DateTime CreationDate { get; set; }
 }

@@ -1,11 +1,10 @@
-﻿namespace PoliciesMicroservice.Models
+﻿namespace PoliciesMicroservice.Models;
+
+internal class Property
 {
-    internal class Property
-    {
-        public string? StreetAddress { get; set; }
+    public string? StreetAddress { get; set; }
 
-        public int PriceInPounds { get; set; }
+    public int PriceInPounds { get; set; }
 
-        public string? Postcode { get; set; }
-    }
+    public string? Postcode { get; set; }
 }
